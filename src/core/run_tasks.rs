@@ -28,7 +28,6 @@
 /// - `execute_task`: Executes a task with the given arguments and syntax.
 /// - `write_result`: Writes the result of a test to a file in a specified format.
 /// - `write_result_error`: Handles writing error results to a specified format.
-
 use regex::Regex;
 use std::fs::File;
 use std::str::FromStr;
@@ -105,7 +104,7 @@ pub async fn rukinia_run_analysis(result_format: Option<ResultFormat>) {
 ///
 pub async fn rukinia_execute_all_tests(buffer: &str, output_format: Option<ResultFormat>) {
     for line in buffer.lines() {
-        match rukinia_execute_single_test(line).await{
+        match rukinia_execute_single_test(line).await {
             Ok(rukinia_entry) => {
                 rukinia_entry.display_result();
                 if let Some(ref valid_format) = output_format {
@@ -118,7 +117,7 @@ pub async fn rukinia_execute_all_tests(buffer: &str, output_format: Option<Resul
                         .display_result();
                     }
                 }
-            },
+            }
             Err(rukinia_error) => {
                 rukinia_error.display_result();
                 if let Some(ref valid_format) = output_format {
@@ -239,7 +238,6 @@ fn convert_config_line_to_vector_string(buffer: &str) -> Vec<String> {
 async fn evaluate_logical_expression(
     expression_parts: Vec<String>,
 ) -> Result<RukiniaResultEntry, RukiniaError> {
-
     let (result, mut remaining_parts) = read_expression_task(expression_parts.clone()).await?;
     let mut final_result = result.clone();
 
@@ -257,7 +255,8 @@ async fn evaluate_logical_expression(
             }
         };
 
-        let (new_task_result, new_remaining) = read_expression_task(remaining_parts[1..].to_vec()).await?;
+        let (new_task_result, new_remaining) =
+            read_expression_task(remaining_parts[1..].to_vec()).await?;
 
         match logical_operator {
             LogicalOperator::And => {
@@ -332,11 +331,13 @@ async fn read_expression_task(
             _ => match RukiniaAllTasks::from_str(word) {
                 Ok(_) => {
                     let (task_result, arguments, remaining) = create_task(remaining_parts.clone())?;
-                    let rukinia_valid = execute_task(task_result, arguments.clone(), syntax).await?;
+                    let rukinia_valid =
+                        execute_task(task_result, arguments.clone(), syntax).await?;
                     return Ok((rukinia_valid, remaining));
                 }
                 Err(_) => {
-                    let (new_syntax_trait, new_remaining) = SyntaxForTrait::extract_syntax(remaining_parts).await?;
+                    let (new_syntax_trait, new_remaining) =
+                        SyntaxForTrait::extract_syntax(remaining_parts).await?;
                     syntax = new_syntax_trait;
                     remaining_parts = new_remaining;
                 }
@@ -364,7 +365,7 @@ async fn read_expression_task(
 /// - The task (`RukiniaAllTasks`) that corresponds to the task name found in the expression.
 /// - A vector of strings representing the arguments passed to the task.
 /// - A vector of strings containing the remaining parts (typically operators and additional expressions).
-/// 
+///
 /// # Errors
 /// Returns a `RukiniaError` if the task name is invalid or cannot be parsed.
 fn create_task(
@@ -400,7 +401,6 @@ fn create_task(
 
     Ok((task, arguments, remaining_parts))
 }
-
 
 /// Executes the specified task with the given arguments and syntax.
 ///

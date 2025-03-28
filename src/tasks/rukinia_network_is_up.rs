@@ -10,16 +10,18 @@ pub struct RukiniaNetworkIsUp {
 }
 
 impl RukiniaProcess for RukiniaNetworkIsUp {
-
     fn get_rukinia_command() -> &'static str {
         "rukinia_netif_is_up"
     }
 
-    fn new(arguments: Vec<String>, syntax : SyntaxForTrait) -> Result<Self,RukiniaError> where Self: Sized {
+    fn new(arguments: Vec<String>, syntax: SyntaxForTrait) -> Result<Self, RukiniaError>
+    where
+        Self: Sized,
+    {
         let mut rukinia_network_is_up = RukiniaNetworkIsUp {
             arguments,
             syntax,
-            result: RukiniaResultEntry::new(RukiniaResultType::TestFail,String::new()),
+            result: RukiniaResultEntry::new(RukiniaResultType::TestFail, String::new()),
         };
 
         let pid = match rukinia_network_is_up.arguments.get(0) {
@@ -41,7 +43,7 @@ impl RukiniaProcess for RukiniaNetworkIsUp {
 
         match fs::read_to_string(&path) {
             Ok(content) => {
-                if content.trim() == "up"{
+                if content.trim() == "up" {
                     rukinia_network_is_up.result.result_type = RukiniaResultType::TestSuccess;
                 }
             }

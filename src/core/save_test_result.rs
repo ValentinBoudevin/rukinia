@@ -1,8 +1,8 @@
 use csv::WriterBuilder;
 use serde::Serialize;
+use std::fmt;
 use std::fs::OpenOptions;
 use std::path::Path;
-use std::fmt;
 #[derive(Serialize)]
 pub struct CsvTestResult<'a> {
     #[serde(rename = "TEST MESSAGE")]
@@ -13,8 +13,8 @@ pub struct CsvTestResult<'a> {
 
 #[derive(Clone)]
 pub struct ResultFormat {
-    pub format : FormatOutput,
-    pub path : String,
+    pub format: FormatOutput,
+    pub path: String,
 }
 
 #[derive(PartialEq, Clone)]

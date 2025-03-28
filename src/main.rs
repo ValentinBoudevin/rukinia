@@ -20,8 +20,8 @@ use std::env;
 use std::error::Error;
 use std::time::Instant;
 
-use crate::core::interactive_shell::interactive_shell;
 use crate::core::configuration::rukinia_use_settings;
+use crate::core::interactive_shell::interactive_shell;
 use crate::core::run_tasks::rukinia_run_analysis;
 
 use crate::core::save_test_result::FormatOutput;
@@ -75,7 +75,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         .position(|arg| arg == "custom-path")
         .and_then(|index| args.get(index + 1).cloned())
         .unwrap_or_else(|| "rukinia".to_string());
-    
+
     if args.contains(&"save-csv".to_string()) {
         result_format = Some(ResultFormat {
             format: FormatOutput::Csv,
@@ -91,7 +91,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             format: FormatOutput::JUnit,
             path: custom_path,
         });
-    } 
+    }
 
     match runtime {
         Ok(run) => run.block_on(rukinia_run_analysis(result_format)),

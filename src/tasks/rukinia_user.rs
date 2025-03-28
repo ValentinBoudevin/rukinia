@@ -12,16 +12,18 @@ pub struct RukiniaUser {
 }
 
 impl RukiniaProcess for RukiniaUser {
-
     fn get_rukinia_command() -> &'static str {
         "rukinia_user"
     }
 
-    fn new(arguments: Vec<String>, syntax : SyntaxForTrait) -> Result<Self,RukiniaError> where Self: Sized {
+    fn new(arguments: Vec<String>, syntax: SyntaxForTrait) -> Result<Self, RukiniaError>
+    where
+        Self: Sized,
+    {
         let mut rukinia_user = RukiniaUser {
             arguments,
             syntax,
-            result: RukiniaResultEntry::new(RukiniaResultType::TestFail,String::new()),
+            result: RukiniaResultEntry::new(RukiniaResultType::TestFail, String::new()),
         };
 
         let username = match rukinia_user.arguments.get(0) {
@@ -49,7 +51,7 @@ impl RukiniaProcess for RukiniaUser {
                         rukinia_user.arguments.join(" ")
                     ),
                     "Failed to open /etc/passwd".to_string(),
-                    err.to_string()
+                    err.to_string(),
                 ));
             }
         };
@@ -72,7 +74,7 @@ impl RukiniaProcess for RukiniaUser {
                             rukinia_user.arguments.join(" ")
                         ),
                         "Failed to read in /etc/passwd".to_string(),
-                        err.to_string()
+                        err.to_string(),
                     ));
                 }
             }

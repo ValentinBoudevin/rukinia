@@ -8,12 +8,11 @@ pub enum Syntax {
 }
 
 impl Syntax {
-
     pub const NOT: &'static str = "not";
     pub const AS: &'static str = "as";
     pub const ID: &'static str = "id";
 
-    pub fn _get_number_args(&self) -> &'static i8{
+    pub fn _get_number_args(&self) -> &'static i8 {
         match self {
             Syntax::Not => &0,
             Syntax::As(_) => &1,
@@ -49,11 +48,10 @@ impl Syntax {
         }
         None
     }
-
 }
 
 #[derive(Clone)]
-pub enum SyntaxForTrait{
+pub enum SyntaxForTrait {
     Arguments(Vec<Syntax>),
 }
 
@@ -66,13 +64,16 @@ impl SyntaxForTrait {
 
     pub fn get_as(&self) -> Option<String> {
         match self {
-            SyntaxForTrait::Arguments(vector) => vector.iter()
-            .find(|s| matches!(s, Syntax::As(_)))
-            .and_then(|s| s.get_argument()),
+            SyntaxForTrait::Arguments(vector) => vector
+                .iter()
+                .find(|s| matches!(s, Syntax::As(_)))
+                .and_then(|s| s.get_argument()),
         }
     }
 
-    pub async fn extract_syntax(expression: Vec<String>) -> Result<(Self, Vec<String>),RukiniaError> {
+    pub async fn extract_syntax(
+        expression: Vec<String>,
+    ) -> Result<(Self, Vec<String>), RukiniaError> {
         let mut syntax = Vec::new();
         let mut iter = expression.iter();
 
@@ -115,5 +116,4 @@ impl SyntaxForTrait {
         }
         Ok((SyntaxForTrait::Arguments(syntax), Vec::new()))
     }
-
 }

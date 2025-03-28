@@ -1,21 +1,23 @@
 use std::fs;
 
 use crate::core::rukinia_result::*;
-use crate::tasks::task::RukiniaProcess;
 use crate::core::syntax::SyntaxForTrait;
+use crate::tasks::task::RukiniaProcess;
 pub struct RukiniaKernelThread {
     pub arguments: Vec<String>,
-    pub syntax : SyntaxForTrait,
+    pub syntax: SyntaxForTrait,
     result: RukiniaResultEntry,
 }
 
 impl RukiniaProcess for RukiniaKernelThread {
-
-    fn new(arguments: Vec<String>, syntax : SyntaxForTrait) -> Result<Self,RukiniaError> where Self: Sized {
-        let mut rukinia_kernel_thread= RukiniaKernelThread {
+    fn new(arguments: Vec<String>, syntax: SyntaxForTrait) -> Result<Self, RukiniaError>
+    where
+        Self: Sized,
+    {
+        let mut rukinia_kernel_thread = RukiniaKernelThread {
             arguments,
             syntax,
-            result: RukiniaResultEntry::new(RukiniaResultType::TestFail,String::new()),
+            result: RukiniaResultEntry::new(RukiniaResultType::TestFail, String::new()),
         };
 
         let process_name = match rukinia_kernel_thread.arguments.get(0) {
@@ -38,21 +40,26 @@ impl RukiniaProcess for RukiniaKernelThread {
                 for entry in entries.flatten() {
                     let path = entry.path();
                     let pid_dir = path.file_name().and_then(|s| s.to_str());
-                    if !path.is_dir() || pid_dir.is_none() || !pid_dir.unwrap().chars().all(char::is_numeric) {
+                    if !path.is_dir()
+                        || pid_dir.is_none()
+                        || !pid_dir.unwrap().chars().all(char::is_numeric)
+                    {
                         continue;
                     }
-    
+
                     let status_file = path.join("status");
-    
+
                     if let Ok(status) = fs::read_to_string(&status_file) {
                         for line in status.lines() {
                             if line.starts_with("Name:\t") {
-                                if line.split_whitespace().nth(1) == Some(process_name){
-                                    rukinia_kernel_thread.result.result_type = RukiniaResultType::TestSuccess;
+                                if line.split_whitespace().nth(1) == Some(process_name) {
+                                    rukinia_kernel_thread.result.result_type =
+                                        RukiniaResultType::TestSuccess;
                                 }
                             }
                             if line.starts_with("VmSize:") {
-                                rukinia_kernel_thread.result.result_type = RukiniaResultType::TestFail;
+                                rukinia_kernel_thread.result.result_type =
+                                    RukiniaResultType::TestFail;
                                 break;
                             }
                         }
@@ -69,7 +76,7 @@ impl RukiniaProcess for RukiniaKernelThread {
                         RukiniaKernelThread::get_rukinia_command(),
                         rukinia_kernel_thread.arguments.join(" ")
                     ),
-                     e.to_string(),
+                    e.to_string(),
                     "Failed to read /proc/modules".to_string(),
                 ));
             }
@@ -81,7 +88,7 @@ impl RukiniaProcess for RukiniaKernelThread {
     fn get_rukinia_command() -> &'static str {
         "rukinia_kthread"
     }
-    
+
     fn get_result(&self) -> RukiniaResultEntry {
         return self.result.clone();
     }
@@ -90,7 +97,11 @@ impl RukiniaProcess for RukiniaKernelThread {
         return format!(
             "Checking kernel thread {} is {}running",
             self.arguments.get(0).unwrap(),
-            if self.syntax.contains_not() { "not " } else { "" },
+            if self.syntax.contains_not() {
+                "not "
+            } else {
+                ""
+            },
         );
     }
 

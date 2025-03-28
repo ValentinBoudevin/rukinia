@@ -15,11 +15,14 @@ impl RukiniaProcess for RukiniaNetifHasIp {
         "rukinia_netif_has_ip"
     }
 
-    fn new(arguments: Vec<String>, syntax : SyntaxForTrait) -> Result<Self,RukiniaError> where Self: Sized {
+    fn new(arguments: Vec<String>, syntax: SyntaxForTrait) -> Result<Self, RukiniaError>
+    where
+        Self: Sized,
+    {
         let mut rukinia_net_if_has_ip = RukiniaNetifHasIp {
             arguments,
             syntax,
-            result: RukiniaResultEntry::new(RukiniaResultType::TestFail,String::new()),
+            result: RukiniaResultEntry::new(RukiniaResultType::TestFail, String::new()),
             ip_version: String::from("-4"),
             extra_flags: String::new(),
         };
@@ -86,7 +89,8 @@ impl RukiniaProcess for RukiniaNetifHasIp {
                     if addr.as_sockaddr_in().is_some() && rukinia_net_if_has_ip.ip_version == "-4" {
                         return true;
                     }
-                    if addr.as_sockaddr_in6().is_some() && rukinia_net_if_has_ip.ip_version == "-6" {
+                    if addr.as_sockaddr_in6().is_some() && rukinia_net_if_has_ip.ip_version == "-6"
+                    {
                         return true;
                     }
                 }

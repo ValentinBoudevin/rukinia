@@ -24,7 +24,7 @@ impl RukiniaProcess for RukiniaUserMemberOf {
         let mut rukinia_user_member_of = RukiniaUserMemberOf {
             arguments,
             syntax,
-            result: RukiniaResultEntry::new(RukiniaResultType::TestFail,String::new()),
+            result: RukiniaResultEntry::new(RukiniaResultType::TestFail, String::new()),
         };
 
         let username = match rukinia_user_member_of.arguments.get(0) {

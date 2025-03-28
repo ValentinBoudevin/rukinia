@@ -1,11 +1,11 @@
+use std::fs;
+use std::fs::OpenOptions;
 use std::io;
 use std::io::Write;
-use std::fs::OpenOptions;
 use std::path::Path;
-use std::fs;
 
-use tokio::runtime::Runtime;
 use crate::core::run_tasks::rukinia_execute_single_test;
+use tokio::runtime::Runtime;
 
 const HISTORY_FILE: &str = ".rukinia_history";
 
@@ -67,7 +67,7 @@ pub fn interactive_shell() {
                     let previous_command = &history[index - 1];
                     println!("Running: {}", previous_command);
                     rt.block_on(async {
-                        match rukinia_execute_single_test(&previous_command ).await{
+                        match rukinia_execute_single_test(&previous_command).await {
                             Ok(result) => result.display_result(),
                             Err(err) => err.display_result(),
                         };
@@ -85,7 +85,7 @@ pub fn interactive_shell() {
         history.push(command.clone());
 
         rt.block_on(async {
-            match rukinia_execute_single_test(&command).await{
+            match rukinia_execute_single_test(&command).await {
                 Ok(result) => result.display_result(),
                 Err(err) => err.display_result(),
             };

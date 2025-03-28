@@ -22,7 +22,7 @@ impl RukiniaProcess for RukiniaSymlink {
         let mut rukinia_symlink = RukiniaSymlink {
             arguments,
             syntax,
-            result: RukiniaResultEntry::new(RukiniaResultType::TestFail,String::new()),
+            result: RukiniaResultEntry::new(RukiniaResultType::TestFail, String::new()),
         };
 
         let link_path = match rukinia_symlink.arguments.get(0) {
@@ -129,7 +129,7 @@ impl RukiniaProcess for RukiniaSymlink {
             self.arguments.get(1).unwrap()
         );
     }
-    
+
     fn set_result(&mut self, result: RukiniaResultEntry) {
         self.result = result;
     }

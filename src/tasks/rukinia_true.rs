@@ -12,11 +12,13 @@ impl RukiniaProcess for RukiniaTrue {
         "true"
     }
 
-    fn new(_arguments: Vec<String>, syntax : SyntaxForTrait) -> Result<Self,RukiniaError> where Self: Sized {
+    fn new(_arguments: Vec<String>, syntax: SyntaxForTrait) -> Result<Self, RukiniaError>
+    where
+        Self: Sized,
+    {
         let mut rukinia_true = RukiniaTrue {
             syntax,
-            result: RukiniaResultEntry::new(RukiniaResultType::TestSuccess,"true".to_string()),
-
+            result: RukiniaResultEntry::new(RukiniaResultType::TestSuccess, "true".to_string()),
         };
         rukinia_true.apply_syntax();
         return Ok(rukinia_true);

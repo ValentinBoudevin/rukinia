@@ -9,23 +9,23 @@ use std::future::Future;
 
 use crate::core::syntax::SyntaxForTrait;
 
-use crate::tasks::rukinia_network_is_up::RukiniaNetworkIsUp;
-use crate::tasks::rukinia_kconf::RukiniaKernelConf;
-use crate::tasks::rukinia_netif_has_ip::RukiniaNetifHasIp;
-use crate::tasks::rukinia_http_request::RukiniaHttpReq;
-use crate::tasks::rukinia_user::RukiniaUser;
-use crate::tasks::rukinia_group::RukiniaGroup;
-use crate::tasks::rukinia_user_memberof::RukiniaUserMemberOf;
-use crate::tasks::rukinia_kmod::RukiniaKernelMod;
-use crate::tasks::rukinia_kthread::RukiniaKernelThread;
-use crate::tasks::rukinia_symlink::RukiniaSymlink;
 use super::rukinia_cmd::RukiniaCmd;
 use super::rukinia_false::RukiniaFalse;
 use super::rukinia_true::RukiniaTrue;
+use crate::tasks::rukinia_group::RukiniaGroup;
+use crate::tasks::rukinia_http_request::RukiniaHttpReq;
+use crate::tasks::rukinia_kconf::RukiniaKernelConf;
+use crate::tasks::rukinia_kmod::RukiniaKernelMod;
+use crate::tasks::rukinia_kthread::RukiniaKernelThread;
+use crate::tasks::rukinia_netif_has_ip::RukiniaNetifHasIp;
+use crate::tasks::rukinia_network_is_up::RukiniaNetworkIsUp;
+use crate::tasks::rukinia_symlink::RukiniaSymlink;
+use crate::tasks::rukinia_user::RukiniaUser;
+use crate::tasks::rukinia_user_memberof::RukiniaUserMemberOf;
 
-use crate::core::rukinia_result::RukiniaResultType;
-use crate::core::rukinia_result::RukiniaResultEntry;
 use crate::core::rukinia_result::RukiniaError;
+use crate::core::rukinia_result::RukiniaResultEntry;
+use crate::core::rukinia_result::RukiniaResultType;
 
 /// Enum representing all available Rukinia tasks.
 ///
@@ -60,9 +60,7 @@ pub enum RukiniaAllTasks {
     False,
 }
 
-
 impl RukiniaAllTasks {
-
     /// Execute the task with given arguments and syntax rules.
     ///
     /// # Arguments
@@ -77,86 +75,64 @@ impl RukiniaAllTasks {
     /// let task = RukiniaAllTasks::NetworkIsUp;
     /// let result = task.execute(vec!["eth0".to_string()], syntax).await;
     /// ```
-    pub async fn execute(self, arguments: Vec<String>, syntax: SyntaxForTrait) -> Result<RukiniaResultEntry, RukiniaError> {
+    pub async fn execute(
+        self,
+        arguments: Vec<String>,
+        syntax: SyntaxForTrait,
+    ) -> Result<RukiniaResultEntry, RukiniaError> {
         match self {
-            RukiniaAllTasks::NetworkIsUp => {
-                match RukiniaNetworkIsUp::new(arguments, syntax) {
-                    Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
-                    Err(rukinia_error) => Err(rukinia_error),
-                }
-            }
-            RukiniaAllTasks::KernelConf => {
-                match RukiniaKernelConf::new(arguments, syntax) {
-                    Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
-                    Err(rukinia_error) => Err(rukinia_error),
-                }
-            }
-            RukiniaAllTasks::NetifHasIp => {
-                match RukiniaNetifHasIp::new(arguments, syntax) {
-                    Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
-                    Err(rukinia_error) => Err(rukinia_error),
-                }
-            }
-            RukiniaAllTasks::HttpReq => {
-                match RukiniaHttpReq::async_new(arguments, syntax).await {
-                    Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
-                    Err(rukinia_error) => Err(rukinia_error),
-                }
-            }
-            RukiniaAllTasks::User => {
-                match RukiniaUser::new(arguments, syntax) {
-                    Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
-                    Err(rukinia_error) => Err(rukinia_error),
-                }
-            }
-            RukiniaAllTasks::Group => {
-                match RukiniaGroup::new(arguments, syntax) {
-                    Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
-                    Err(rukinia_error) => Err(rukinia_error),
-                }
-            }
-            RukiniaAllTasks::UserMemberOf => {
-                match RukiniaUserMemberOf::new(arguments, syntax) {
-                    Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
-                    Err(rukinia_error) => Err(rukinia_error),
-                }
-            }
-            RukiniaAllTasks::KernelMod => {
-                match RukiniaKernelMod::new(arguments, syntax) {
-                    Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
-                    Err(rukinia_error) => Err(rukinia_error),
-                }
-            }
-            RukiniaAllTasks::KernelThread => {
-                match RukiniaKernelThread::new(arguments, syntax) {
-                    Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
-                    Err(rukinia_error) => Err(rukinia_error),
-                }
-            }
-            RukiniaAllTasks::Symlink => {
-                match RukiniaSymlink::new(arguments, syntax) {
-                    Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
-                    Err(rukinia_error) => Err(rukinia_error),
-                }
-            }
-            RukiniaAllTasks::Cmd => {
-                match RukiniaCmd::new(arguments, syntax) {
-                    Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
-                    Err(rukinia_error) => Err(rukinia_error),
-                }
-            }    
-            RukiniaAllTasks::True => {
-                match RukiniaTrue::new(arguments, syntax) {
-                    Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
-                    Err(rukinia_error) => Err(rukinia_error),
-                }
-            }
-            RukiniaAllTasks::False => {
-                match RukiniaFalse::new(arguments, syntax) {
-                    Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
-                    Err(rukinia_error) => Err(rukinia_error),
-                }
-            }
+            RukiniaAllTasks::NetworkIsUp => match RukiniaNetworkIsUp::new(arguments, syntax) {
+                Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
+                Err(rukinia_error) => Err(rukinia_error),
+            },
+            RukiniaAllTasks::KernelConf => match RukiniaKernelConf::new(arguments, syntax) {
+                Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
+                Err(rukinia_error) => Err(rukinia_error),
+            },
+            RukiniaAllTasks::NetifHasIp => match RukiniaNetifHasIp::new(arguments, syntax) {
+                Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
+                Err(rukinia_error) => Err(rukinia_error),
+            },
+            RukiniaAllTasks::HttpReq => match RukiniaHttpReq::async_new(arguments, syntax).await {
+                Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
+                Err(rukinia_error) => Err(rukinia_error),
+            },
+            RukiniaAllTasks::User => match RukiniaUser::new(arguments, syntax) {
+                Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
+                Err(rukinia_error) => Err(rukinia_error),
+            },
+            RukiniaAllTasks::Group => match RukiniaGroup::new(arguments, syntax) {
+                Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
+                Err(rukinia_error) => Err(rukinia_error),
+            },
+            RukiniaAllTasks::UserMemberOf => match RukiniaUserMemberOf::new(arguments, syntax) {
+                Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
+                Err(rukinia_error) => Err(rukinia_error),
+            },
+            RukiniaAllTasks::KernelMod => match RukiniaKernelMod::new(arguments, syntax) {
+                Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
+                Err(rukinia_error) => Err(rukinia_error),
+            },
+            RukiniaAllTasks::KernelThread => match RukiniaKernelThread::new(arguments, syntax) {
+                Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
+                Err(rukinia_error) => Err(rukinia_error),
+            },
+            RukiniaAllTasks::Symlink => match RukiniaSymlink::new(arguments, syntax) {
+                Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
+                Err(rukinia_error) => Err(rukinia_error),
+            },
+            RukiniaAllTasks::Cmd => match RukiniaCmd::new(arguments, syntax) {
+                Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
+                Err(rukinia_error) => Err(rukinia_error),
+            },
+            RukiniaAllTasks::True => match RukiniaTrue::new(arguments, syntax) {
+                Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
+                Err(rukinia_error) => Err(rukinia_error),
+            },
+            RukiniaAllTasks::False => match RukiniaFalse::new(arguments, syntax) {
+                Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
+                Err(rukinia_error) => Err(rukinia_error),
+            },
         }
     }
 
@@ -180,9 +156,13 @@ impl RukiniaAllTasks {
             _ if s == RukiniaHttpReq::get_rukinia_command() => Ok(RukiniaAllTasks::HttpReq),
             _ if s == RukiniaUser::get_rukinia_command() => Ok(RukiniaAllTasks::User),
             _ if s == RukiniaGroup::get_rukinia_command() => Ok(RukiniaAllTasks::Group),
-            _ if s == RukiniaUserMemberOf::get_rukinia_command() => Ok(RukiniaAllTasks::UserMemberOf),
+            _ if s == RukiniaUserMemberOf::get_rukinia_command() => {
+                Ok(RukiniaAllTasks::UserMemberOf)
+            }
             _ if s == RukiniaKernelMod::get_rukinia_command() => Ok(RukiniaAllTasks::KernelMod),
-            _ if s == RukiniaKernelThread::get_rukinia_command() => Ok(RukiniaAllTasks::KernelThread),
+            _ if s == RukiniaKernelThread::get_rukinia_command() => {
+                Ok(RukiniaAllTasks::KernelThread)
+            }
             _ if s == RukiniaSymlink::get_rukinia_command() => Ok(RukiniaAllTasks::Symlink),
             _ if s == RukiniaTrue::get_rukinia_command() => Ok(RukiniaAllTasks::True),
             _ if s == RukiniaFalse::get_rukinia_command() => Ok(RukiniaAllTasks::False),
@@ -190,7 +170,6 @@ impl RukiniaAllTasks {
             _ => Err(()),
         }
     }
-
 }
 
 /// Trait defining synchronous Rukinia task processing.
@@ -205,12 +184,14 @@ pub trait RukiniaProcess {
     /// # Arguments
     /// * `arguments` - Vector of string arguments
     /// * `syntax` - Syntax rules to apply
-    fn new(arguments: Vec<String>, syntax : SyntaxForTrait) -> Result<Self,RukiniaError> where Self: Sized;
+    fn new(arguments: Vec<String>, syntax: SyntaxForTrait) -> Result<Self, RukiniaError>
+    where
+        Self: Sized;
 
     /// Get the current result of the task.
     fn get_result(&self) -> RukiniaResultEntry;
 
-    /// Set the result of the task. 
+    /// Set the result of the task.
     fn set_result(&mut self, result: RukiniaResultEntry);
 
     /// Get the display format for the task's result.
@@ -223,14 +204,24 @@ pub trait RukiniaProcess {
     ///
     /// This handles NOT operators and AS label replacements.    
     fn apply_syntax(&mut self) {
-        let mut new_rukinia_result_type : RukiniaResultType = self.get_result().result_type;
+        let mut new_rukinia_result_type: RukiniaResultType = self.get_result().result_type;
         if self.get_syntax().contains_not() {
             match self.get_result().result_type {
-                RukiniaResultType::TestSuccess => new_rukinia_result_type = RukiniaResultType::TestFail,
-                RukiniaResultType::TestFail => new_rukinia_result_type = RukiniaResultType::TestSuccess,
+                RukiniaResultType::TestSuccess => {
+                    new_rukinia_result_type = RukiniaResultType::TestFail
+                }
+                RukiniaResultType::TestFail => {
+                    new_rukinia_result_type = RukiniaResultType::TestSuccess
+                }
             }
         }
-        self.set_result(RukiniaResultEntry {result_type: new_rukinia_result_type,label: self.get_syntax().get_as().unwrap_or_else(|| self.display_format())});
+        self.set_result(RukiniaResultEntry {
+            result_type: new_rukinia_result_type,
+            label: self
+                .get_syntax()
+                .get_as()
+                .unwrap_or_else(|| self.display_format()),
+        });
     }
 }
 
@@ -246,8 +237,13 @@ pub trait RukiniaProcessAsync {
     /// # Arguments
     /// * `arguments` - Vector of string arguments
     /// * `syntax` - Syntax rules to apply    
-    fn async_new(arguments: Vec<String>, syntax: SyntaxForTrait) -> impl Future<Output = Result<Self, RukiniaError>> + Send where Self: Sized;    
-    
+    fn async_new(
+        arguments: Vec<String>,
+        syntax: SyntaxForTrait,
+    ) -> impl Future<Output = Result<Self, RukiniaError>> + Send
+    where
+        Self: Sized;
+
     /// Get the current result of the task.    
     fn get_result(&self) -> RukiniaResultEntry;
 
@@ -264,13 +260,23 @@ pub trait RukiniaProcessAsync {
     ///
     /// This handles NOT operators and AS label replacements.    
     fn apply_syntax(&mut self) {
-        let mut new_rukinia_result_type : RukiniaResultType = self.get_result().result_type;
+        let mut new_rukinia_result_type: RukiniaResultType = self.get_result().result_type;
         if self.get_syntax().contains_not() {
             match self.get_result().result_type {
-                RukiniaResultType::TestSuccess => new_rukinia_result_type = RukiniaResultType::TestFail,
-                RukiniaResultType::TestFail => new_rukinia_result_type = RukiniaResultType::TestSuccess,
+                RukiniaResultType::TestSuccess => {
+                    new_rukinia_result_type = RukiniaResultType::TestFail
+                }
+                RukiniaResultType::TestFail => {
+                    new_rukinia_result_type = RukiniaResultType::TestSuccess
+                }
             }
         }
-        self.set_result(RukiniaResultEntry {result_type: new_rukinia_result_type,label: self.get_syntax().get_as().unwrap_or_else(|| self.display_format())});
+        self.set_result(RukiniaResultEntry {
+            result_type: new_rukinia_result_type,
+            label: self
+                .get_syntax()
+                .get_as()
+                .unwrap_or_else(|| self.display_format()),
+        });
     }
 }

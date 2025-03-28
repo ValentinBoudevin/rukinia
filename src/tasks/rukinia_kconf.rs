@@ -1,26 +1,28 @@
 use std::fs;
 
 use crate::core::rukinia_result::*;
-use crate::tasks::task::RukiniaProcess;
 use crate::core::syntax::SyntaxForTrait;
+use crate::tasks::task::RukiniaProcess;
 
 pub struct RukiniaKernelConf {
     pub arguments: Vec<String>,
-    pub syntax : SyntaxForTrait,
+    pub syntax: SyntaxForTrait,
     result: RukiniaResultEntry,
 }
 
 impl RukiniaProcess for RukiniaKernelConf {
-
     fn get_rukinia_command() -> &'static str {
         "rukinia_kconf"
     }
 
-    fn new(arguments: Vec<String>, syntax : SyntaxForTrait) -> Result<Self,RukiniaError> where Self: Sized{
+    fn new(arguments: Vec<String>, syntax: SyntaxForTrait) -> Result<Self, RukiniaError>
+    where
+        Self: Sized,
+    {
         let mut rukiniakernelconfg = RukiniaKernelConf {
             arguments,
             syntax,
-            result: RukiniaResultEntry::new(RukiniaResultType::TestFail,String::new()),
+            result: RukiniaResultEntry::new(RukiniaResultType::TestFail, String::new()),
         };
 
         let path = format!("/proc/config.gz");
@@ -56,7 +58,11 @@ impl RukiniaProcess for RukiniaKernelConf {
         return format!(
             "Checking kernel config {} {}set to {}",
             self.arguments.get(0).unwrap(),
-            if self.syntax.contains_not() { "not " } else { "" },
+            if self.syntax.contains_not() {
+                "not "
+            } else {
+                ""
+            },
             self.result.label
         );
     }

@@ -1,5 +1,5 @@
-use std::str::FromStr;
 use std::fmt;
+use std::str::FromStr;
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum LogicalOperator {
@@ -9,10 +9,14 @@ pub enum LogicalOperator {
 
 impl fmt::Display for LogicalOperator {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", match self {
-            LogicalOperator::And => "and",
-            LogicalOperator::Or => "or",
-        })
+        write!(
+            f,
+            "{}",
+            match self {
+                LogicalOperator::And => "and",
+                LogicalOperator::Or => "or",
+            }
+        )
     }
 }
 

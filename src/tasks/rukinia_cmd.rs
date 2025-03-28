@@ -1,23 +1,23 @@
 //! Rukinia Command Execution Module
-//! 
+//!
 //! This module defines `RukiniaCmd`, a struct that represents a command execution
 //! process within the Rukinia framework.
-//! 
+//!
 //! # Overview
 //! `RukiniaCmd` executes external commands, captures their output, and applies syntax rules.
 //! It implements the `RukiniaProcess` trait.
-//! 
+//!
 //! # Errors
 //! If the command execution fails, `RukiniaCmd` returns a `RukiniaError`.
 
-use std::process::{Command, Output};
-use std::io;
 use crate::core::rukinia_result::*;
 use crate::core::syntax::SyntaxForTrait;
 use crate::tasks::task::RukiniaProcess;
+use std::io;
+use std::process::{Command, Output};
 
 /// Represents a Rukinia command execution process.
-/// 
+///
 /// This struct stores the command arguments, syntax rules, and execution result.
 pub struct RukiniaCmd {
     pub arguments: Vec<String>,
@@ -26,13 +26,12 @@ pub struct RukiniaCmd {
 }
 
 impl RukiniaProcess for RukiniaCmd {
-
     /// Creates a new `RukiniaCmd` instance.
-    /// 
+    ///
     /// # Arguments
     /// * `arguments` - A vector of strings representing the command and its arguments.
     /// * `syntax` - The syntax rules applied to the command execution.
-    /// 
+    ///
     /// # Returns
     /// Returns `Ok(RukiniaCmd)` if the command executes successfully, otherwise returns a `RukiniaError`.
     fn new(arguments: Vec<String>, syntax: SyntaxForTrait) -> Result<Self, RukiniaError>
@@ -56,11 +55,9 @@ impl RukiniaProcess for RukiniaCmd {
         let command = arguments[0].clone();
         let command_args = &arguments[1..];
 
-        let output: io::Result<Output> = Command::new(command)
-            .args(command_args)
-            .output();
+        let output: io::Result<Output> = Command::new(command).args(command_args).output();
 
-        if  output.is_ok(){
+        if output.is_ok() {
             if output.unwrap().status.success() {
                 rukinia_cmd.result.result_type = RukiniaResultType::TestSuccess;
             }

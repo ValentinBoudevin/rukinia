@@ -5,13 +5,13 @@ inherit cargo
 # If this is git based prefer versioned ones if they exist
 # DEFAULT_PREFERENCE = "-1"
 
-# how to get rukina could be as easy as but default to a git checkout:
-# SRC_URI += "crate://crates.io/rukina/0.1.0"
+# how to get rukinia could be as easy as but default to a git checkout:
+# SRC_URI += "crate://crates.io/rukinia/0.1.0"
 SRC_URI += "git://git@github.com/ValentinBoudevin/rukinia.git;protocol=ssh;nobranch=1;branch=main"
-SRCREV = "9c54ca3e43c7bb491e24da089457ff0f2281fb6b"
+SRCREV = "62440a7370af711ada7d18881420725f08e5d66c"
 S = "${WORKDIR}/git"
 CARGO_SRC_DIR = ""
-PV:append = ".AUTOINC+9c54ca3e43"
+PV:append = ".AUTOINC+62440a7370"
 
 # please note if you have entries that do not begin with crate://
 # you must change them to how that package can be fetched
@@ -228,11 +228,11 @@ LIC_FILES_CHKSUM = " \
     "
 
 SUMMARY = "Small tester for embedded linux system"
-HOMEPAGE = "https://github.com/ValentinBoudevin/rukina.git"
+HOMEPAGE = "https://github.com/ValentinBoudevin/rukinia.git"
 LICENSE = "CLOSED"
 
 # includes this file if it exists but does not fail
 # this is useful for anything you may want to override from
 # what cargo-bitbake generates.
-include rukina-${PV}.inc
-include rukina.inc
+include rukinia-${PV}.inc
+include rukinia.inc

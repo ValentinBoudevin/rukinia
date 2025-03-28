@@ -19,7 +19,7 @@ impl RukiniaProcess for RukiniaGroup {
         let mut rukinia_group = RukiniaGroup {
             arguments,
             syntax,
-            result: RukiniaResultEntry::new(RukiniaResultType::TestFail,String::new()),
+            result: RukiniaResultEntry::new(RukiniaResultType::TestFail, String::new()),
         };
 
         let group_name = match rukinia_group.arguments.get(0) {

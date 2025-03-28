@@ -14,11 +14,14 @@ impl RukiniaProcess for RukiniaKernelMod {
         "rukinia_kmod"
     }
 
-    fn new(arguments: Vec<String>, syntax : SyntaxForTrait) -> Result<Self,RukiniaError> where Self: Sized {
+    fn new(arguments: Vec<String>, syntax: SyntaxForTrait) -> Result<Self, RukiniaError>
+    where
+        Self: Sized,
+    {
         let mut rukinia_kernel_mod: RukiniaKernelMod = RukiniaKernelMod {
             arguments,
             syntax,
-            result: RukiniaResultEntry::new(RukiniaResultType::TestFail,String::new()),
+            result: RukiniaResultEntry::new(RukiniaResultType::TestFail, String::new()),
         };
 
         let path = format!("/proc/modules");

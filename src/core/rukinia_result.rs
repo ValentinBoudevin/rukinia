@@ -1,8 +1,8 @@
 use crate::core::save_test_result::CsvTestResult;
 use std::error::Error;
+use std::fmt;
 use std::fs::OpenOptions;
 use std::io::{self, Write};
-use std::fmt;
 
 #[derive(PartialEq, Clone)]
 pub enum RukiniaResultType {
@@ -113,9 +113,7 @@ impl RukiniaError {
     ) -> String {
         format!(
             "Command used : {} | Detailed error : {} | Error message : {}",
-            test_command,
-            input_system_error,
-            input_system_error_message
+            test_command, input_system_error, input_system_error_message
         )
     }
 

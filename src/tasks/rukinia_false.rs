@@ -8,7 +8,6 @@ pub struct RukiniaFalse {
 }
 
 impl RukiniaProcess for RukiniaFalse {
-
     fn get_rukinia_command() -> &'static str {
         "false"
     }
@@ -21,10 +20,13 @@ impl RukiniaProcess for RukiniaFalse {
         return self.syntax.clone();
     }
 
-    fn new(_arguments: Vec<String>, syntax : SyntaxForTrait) -> Result<Self,RukiniaError> where Self: Sized    {
+    fn new(_arguments: Vec<String>, syntax: SyntaxForTrait) -> Result<Self, RukiniaError>
+    where
+        Self: Sized,
+    {
         let mut rukinia_false = RukiniaFalse {
             syntax,
-            result: RukiniaResultEntry::new(RukiniaResultType::TestFail,"false".to_string()),
+            result: RukiniaResultEntry::new(RukiniaResultType::TestFail, "false".to_string()),
         };
         rukinia_false.apply_syntax();
         return Ok(rukinia_false);
