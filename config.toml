@@ -1,0 +1,3 @@
+[tokio]
+_flavor = "multi_thread"
+worker_threads = 2
