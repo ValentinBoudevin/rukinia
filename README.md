@@ -30,7 +30,7 @@ Useful options:
 ## Basic config
 
 To run Rukinia, create a configuration describing your tests, and
-invoke it. By default, Rukinia reads ``example/rukinia.conf``.
+invoke it. By default, Rukinia reads ``/etc/rukinia/rukinia.conf``.
 
 A Rukinia config file supports the following statements:
 

@@ -34,12 +34,12 @@ pub fn rukinia_use_settings() -> Result<Runtime, Box<dyn Error>> {
 }
 
 pub fn rukinia_open_test_file(file: &mut Option<File>) {
-    *file = match File::open("example/rukinia.conf") {
+    *file = match File::open("/etc/rukinia/rukinia.conf") {
         Ok(f) => Some(f),
         Err(e) => {
             RukiniaError::new(
-                "rukinia init open example/rukinia.conf".to_string(),
-                "Failed to open example/rukinia.conf".to_string(),
+                "rukinia init open /etc/rukinia/rukinia.conf".to_string(),
+                "Failed to open /etc/rukinia/rukinia.conf".to_string(),
                 e.to_string(),
             )
             .display_result();
@@ -51,8 +51,8 @@ pub fn rukinia_open_test_file(file: &mut Option<File>) {
 pub fn rukinia_read_test_file(file: &mut File, buffer: &mut String) {
     if let Err(e) = file.read_to_string(buffer) {
         RukiniaError::new(
-            "rukinia init read example/rukinia.conf".to_string(),
-            "Failed to read example/rukinia.conf".to_string(),
+            "rukinia init read /etc/rukinia/rukinia.conf".to_string(),
+            "Failed to read /etc/rukinia/rukinia.conf".to_string(),
             e.to_string(),
         )
         .display_result();
