@@ -23,6 +23,10 @@ Useful options:
 
 ![Screenshot](doc/screenshot.png)
 
+## Screenshot mode shell
+
+![Screenshot](doc/screenshot_shell.png)
+
 ## Basic config
 
 To run Rukinia, create a configuration describing your tests, and
