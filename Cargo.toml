@@ -1,12 +1,12 @@
 [package]
-name = "rukina"
+name = "rukinia"
 version = "0.1.0"
 authors = ["Valentin Boudevin <valentin.boudevin@gmail.com>"]
 edition = "2021"
 
 description = "Small tester for embedded linux system"
-homepage = "https://github.com/ValentinBoudevin/rukina.git"
-repository = "https://github.com/ValentinBoudevin/rukina.git"
+homepage = "https://github.com/ValentinBoudevin/rukinia.git"
+repository = "https://github.com/ValentinBoudevin/rukinia.git"
 
 [profile.release]
 strip = true

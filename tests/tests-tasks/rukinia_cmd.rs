@@ -3,10 +3,10 @@
 #[cfg(test)]
 mod rukinia_cmd {
 
-    use rukina::tasks::rukinia_cmd::RukiniaCmd;
-    use rukina::core::syntax::{Syntax, SyntaxForTrait};
-    use rukina::tasks::task::RukiniaProcess;
-    use rukina::core::rukinia_result::RukiniaResultType;
+    use rukinia::tasks::rukinia_cmd::RukiniaCmd;
+    use rukinia::core::syntax::{Syntax, SyntaxForTrait};
+    use rukinia::tasks::task::RukiniaProcess;
+    use rukinia::core::rukinia_result::RukiniaResultType;
 
     #[test]
     fn test_rukinia_cmd_without_args() {
