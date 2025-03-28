@@ -10,23 +10,21 @@ use crate::core::rukinia_result::RukiniaError;
 #[derive(Deserialize)]
 pub struct TokioConfig {
     pub _flavor: String,
-    pub worker_threads: usize,
+    pub _worker_threads: usize,
 }
 
 #[derive(Deserialize)]
 pub struct RukiniaConfig {
-    pub tokio: TokioConfig,
+    pub _tokio: TokioConfig,
 }
 
 pub fn rukinia_use_settings() -> Result<Runtime, Box<dyn Error>> {
-    let settings = config::Config::builder()
-        .add_source(config::File::with_name("config"))
-        .build()?;
+    // let settings = config::Config::builder()
+    //     .add_source(config::File::with_name("config"))
+    //     .build()?;
+    // let config: RukiniaConfig = settings.try_deserialize()?;
 
-    let config: RukiniaConfig = settings.try_deserialize()?;
-
-    let runtime = tokio::runtime::Builder::new_multi_thread()
-        .worker_threads(config.tokio.worker_threads)
+    let runtime = tokio::runtime::Builder::new_current_thread()
         .enable_all()
         .build()?;
 
