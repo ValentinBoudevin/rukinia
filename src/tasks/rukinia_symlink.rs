@@ -25,7 +25,7 @@ impl RukiniaProcess for RukiniaSymlink {
             result: RukiniaResultEntry::new(RukiniaResultType::TestFail, String::new()),
         };
 
-        let link_path = match rukinia_symlink.arguments.get(0) {
+        let link_path = match rukinia_symlink.arguments.first() {
             Some(path) => Path::new(path),
             None => {
                 return Err(RukiniaError::new(
@@ -110,24 +110,24 @@ impl RukiniaProcess for RukiniaSymlink {
         }
 
         rukinia_symlink.apply_syntax();
-        return Ok(rukinia_symlink);
+        Ok(rukinia_symlink)
     }
 
     fn get_result(&self) -> RukiniaResultEntry {
-        return self.result.clone();
+        self.result.clone()
     }
 
     fn display_format(&self) -> String {
-        return format!(
+        format!(
             "Checking link {} does {}point to {}",
-            self.arguments.get(0).unwrap(),
+            self.arguments.first().unwrap(),
             if self.syntax.contains_not() {
                 "not "
             } else {
                 ""
             },
             self.arguments.get(1).unwrap()
-        );
+        )
     }
 
     fn set_result(&mut self, result: RukiniaResultEntry) {
@@ -135,6 +135,6 @@ impl RukiniaProcess for RukiniaSymlink {
     }
 
     fn get_syntax(&self) -> SyntaxForTrait {
-        return self.syntax.clone();
+        self.syntax.clone()
     }
 }

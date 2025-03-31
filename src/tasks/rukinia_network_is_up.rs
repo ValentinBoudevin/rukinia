@@ -24,7 +24,7 @@ impl RukiniaProcess for RukiniaNetworkIsUp {
             result: RukiniaResultEntry::new(RukiniaResultType::TestFail, String::new()),
         };
 
-        let pid = match rukinia_network_is_up.arguments.get(0) {
+        let pid = match rukinia_network_is_up.arguments.first() {
             Some(name) => name.trim_matches('"'),
             None => {
                 return Err(RukiniaError::new(
@@ -61,23 +61,23 @@ impl RukiniaProcess for RukiniaNetworkIsUp {
         }
 
         rukinia_network_is_up.apply_syntax();
-        return Ok(rukinia_network_is_up);
+        Ok(rukinia_network_is_up)
     }
 
     fn get_result(&self) -> RukiniaResultEntry {
-        return self.result.clone();
+        self.result.clone()
     }
 
     fn display_format(&self) -> String {
-        return format!(
+        format!(
             "Checking if interface {} is {}up",
-            self.arguments.get(0).unwrap(),
+            self.arguments.first().unwrap(),
             if self.syntax.contains_not() {
                 "not "
             } else {
                 ""
             }
-        );
+        )
     }
 
     fn set_result(&mut self, result: RukiniaResultEntry) {
@@ -85,6 +85,6 @@ impl RukiniaProcess for RukiniaNetworkIsUp {
     }
 
     fn get_syntax(&self) -> SyntaxForTrait {
-        return self.syntax.clone();
+        self.syntax.clone()
     }
 }

@@ -17,7 +17,7 @@ impl RukiniaProcess for RukiniaFalse {
     }
 
     fn get_syntax(&self) -> SyntaxForTrait {
-        return self.syntax.clone();
+        self.syntax.clone()
     }
 
     fn new(_arguments: Vec<String>, syntax: SyntaxForTrait) -> Result<Self, RukiniaError>
@@ -29,21 +29,21 @@ impl RukiniaProcess for RukiniaFalse {
             result: RukiniaResultEntry::new(RukiniaResultType::TestFail, "false".to_string()),
         };
         rukinia_false.apply_syntax();
-        return Ok(rukinia_false);
+        Ok(rukinia_false)
     }
 
     fn get_result(&self) -> RukiniaResultEntry {
-        return self.result.clone();
+        self.result.clone()
     }
 
     fn display_format(&self) -> String {
-        return format!(
+        format!(
             "{}false",
             if self.syntax.contains_not() {
                 "not "
             } else {
                 ""
             }
-        );
+        )
     }
 }

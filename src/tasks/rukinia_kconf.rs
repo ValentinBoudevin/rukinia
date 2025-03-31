@@ -25,11 +25,11 @@ impl RukiniaProcess for RukiniaKernelConf {
             result: RukiniaResultEntry::new(RukiniaResultType::TestFail, String::new()),
         };
 
-        let path = format!("/proc/config.gz");
+        let path = "/proc/config.gz".to_string();
 
         match fs::read_to_string(&path) {
             Ok(content) => {
-                let test_succed = content.trim() == rukiniakernelconfg.arguments.get(0).unwrap();
+                let test_succed = content.trim() == rukiniakernelconfg.arguments.first().unwrap();
                 if test_succed {
                     rukiniakernelconfg.result.result_type = RukiniaResultType::TestSuccess;
                 }
@@ -47,24 +47,24 @@ impl RukiniaProcess for RukiniaKernelConf {
             }
         }
         rukiniakernelconfg.apply_syntax();
-        return Ok(rukiniakernelconfg);
+        Ok(rukiniakernelconfg)
     }
 
     fn get_result(&self) -> RukiniaResultEntry {
-        return self.result.clone();
+        self.result.clone()
     }
 
     fn display_format(&self) -> String {
-        return format!(
+        format!(
             "Checking kernel config {} {}set to {}",
-            self.arguments.get(0).unwrap(),
+            self.arguments.first().unwrap(),
             if self.syntax.contains_not() {
                 "not "
             } else {
                 ""
             },
             self.result.label
-        );
+        )
     }
 
     fn set_result(&mut self, result: RukiniaResultEntry) {
@@ -72,6 +72,6 @@ impl RukiniaProcess for RukiniaKernelConf {
     }
 
     fn get_syntax(&self) -> SyntaxForTrait {
-        return self.syntax.clone();
+        self.syntax.clone()
     }
 }

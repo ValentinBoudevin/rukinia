@@ -109,7 +109,7 @@ impl SyntaxForTrait {
                 _ => {
                     let mut remaining = Vec::new();
                     remaining.push(word.clone());
-                    remaining.extend(iter.map(|s| s.clone()));
+                    remaining.extend(iter.cloned());
                     return Ok((SyntaxForTrait::Arguments(syntax), remaining));
                 }
             }

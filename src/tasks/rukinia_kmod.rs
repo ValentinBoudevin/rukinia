@@ -24,8 +24,8 @@ impl RukiniaProcess for RukiniaKernelMod {
             result: RukiniaResultEntry::new(RukiniaResultType::TestFail, String::new()),
         };
 
-        let path = format!("/proc/modules");
-        let module_name = match rukinia_kernel_mod.arguments.get(0) {
+        let path = "/proc/modules".to_string();
+        let module_name = match rukinia_kernel_mod.arguments.first() {
             Some(name) => name.trim_matches('"'),
             None => {
                 return Err(RukiniaError::new(
@@ -63,23 +63,23 @@ impl RukiniaProcess for RukiniaKernelMod {
         }
 
         rukinia_kernel_mod.apply_syntax();
-        return Ok(rukinia_kernel_mod);
+        Ok(rukinia_kernel_mod)
     }
 
     fn get_result(&self) -> RukiniaResultEntry {
-        return self.result.clone();
+        self.result.clone()
     }
 
     fn display_format(&self) -> String {
-        return format!(
+        format!(
             "Checking kernel module {} {}loaded",
-            self.arguments.get(0).unwrap(),
+            self.arguments.first().unwrap(),
             if self.syntax.contains_not() {
                 "not "
             } else {
                 ""
             }
-        );
+        )
     }
 
     fn set_result(&mut self, result: RukiniaResultEntry) {
@@ -87,6 +87,6 @@ impl RukiniaProcess for RukiniaKernelMod {
     }
 
     fn get_syntax(&self) -> SyntaxForTrait {
-        return self.syntax.clone();
+        self.syntax.clone()
     }
 }

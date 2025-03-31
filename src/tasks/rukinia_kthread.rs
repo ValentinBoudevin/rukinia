@@ -20,7 +20,7 @@ impl RukiniaProcess for RukiniaKernelThread {
             result: RukiniaResultEntry::new(RukiniaResultType::TestFail, String::new()),
         };
 
-        let process_name = match rukinia_kernel_thread.arguments.get(0) {
+        let process_name = match rukinia_kernel_thread.arguments.first() {
             Some(name) => name.trim_matches('"'),
             None => {
                 return Err(RukiniaError::new(
@@ -51,11 +51,9 @@ impl RukiniaProcess for RukiniaKernelThread {
 
                     if let Ok(status) = fs::read_to_string(&status_file) {
                         for line in status.lines() {
-                            if line.starts_with("Name:\t") {
-                                if line.split_whitespace().nth(1) == Some(process_name) {
-                                    rukinia_kernel_thread.result.result_type =
+                            if line.starts_with("Name:\t") && line.split_whitespace().nth(1) == Some(process_name) {
+                                rukinia_kernel_thread.result.result_type =
                                         RukiniaResultType::TestSuccess;
-                                }
                             }
                             if line.starts_with("VmSize:") {
                                 rukinia_kernel_thread.result.result_type =
@@ -82,7 +80,7 @@ impl RukiniaProcess for RukiniaKernelThread {
             }
         }
         rukinia_kernel_thread.apply_syntax();
-        return Ok(rukinia_kernel_thread);
+        Ok(rukinia_kernel_thread)
     }
 
     fn get_rukinia_command() -> &'static str {
@@ -90,19 +88,19 @@ impl RukiniaProcess for RukiniaKernelThread {
     }
 
     fn get_result(&self) -> RukiniaResultEntry {
-        return self.result.clone();
+        self.result.clone()
     }
 
     fn display_format(&self) -> String {
-        return format!(
+        format!(
             "Checking kernel thread {} is {}running",
-            self.arguments.get(0).unwrap(),
+            self.arguments.first().unwrap(),
             if self.syntax.contains_not() {
                 "not "
             } else {
                 ""
             },
-        );
+        )
     }
 
     fn set_result(&mut self, result: RukiniaResultEntry) {
@@ -110,6 +108,6 @@ impl RukiniaProcess for RukiniaKernelThread {
     }
 
     fn get_syntax(&self) -> SyntaxForTrait {
-        return self.syntax.clone();
+        self.syntax.clone()
     }
 }

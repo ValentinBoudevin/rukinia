@@ -36,7 +36,7 @@ impl RukiniaProcess for RukiniaNetifHasIp {
             }
         }
 
-        let iface_name = match rukinia_net_if_has_ip.arguments.get(0) {
+        let iface_name = match rukinia_net_if_has_ip.arguments.first() {
             Some(name) => name.trim_matches('"'),
             None => {
                 return Err(RukiniaError::new(
@@ -77,7 +77,7 @@ impl RukiniaProcess for RukiniaNetifHasIp {
                 }
             })
             .any(|(flags, address)| {
-                let flags_str = format!("{}", flags.to_string()).to_lowercase();
+                let flags_str = flags.to_string().to_lowercase();
                 let extra_flags_lower = rukinia_net_if_has_ip.extra_flags.trim().to_lowercase();
                 let flags_contains_extra = flags_str.contains(&extra_flags_lower);
 
@@ -101,17 +101,17 @@ impl RukiniaProcess for RukiniaNetifHasIp {
             rukinia_net_if_has_ip.result.result_type = RukiniaResultType::TestSuccess;
         }
         rukinia_net_if_has_ip.apply_syntax();
-        return Ok(rukinia_net_if_has_ip);
+        Ok(rukinia_net_if_has_ip)
     }
 
     fn get_result(&self) -> RukiniaResultEntry {
-        return self.result.clone();
+        self.result.clone()
     }
 
     fn display_format(&self) -> String {
-        return format!(
+        format!(
             "Checking interface {} has {}ipv{} assigned {}",
-            self.arguments.get(0).unwrap(),
+            self.arguments.first().unwrap(),
             if self.syntax.contains_not() {
                 "not "
             } else {
@@ -119,7 +119,7 @@ impl RukiniaProcess for RukiniaNetifHasIp {
             },
             self.ip_version,
             self.extra_flags
-        );
+        )
     }
 
     fn set_result(&mut self, result: RukiniaResultEntry) {
@@ -127,6 +127,6 @@ impl RukiniaProcess for RukiniaNetifHasIp {
     }
 
     fn get_syntax(&self) -> SyntaxForTrait {
-        return self.syntax.clone();
+        self.syntax.clone()
     }
 }

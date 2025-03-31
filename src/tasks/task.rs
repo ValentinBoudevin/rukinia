@@ -27,6 +27,8 @@ use crate::core::rukinia_result::RukiniaError;
 use crate::core::rukinia_result::RukiniaResultEntry;
 use crate::core::rukinia_result::RukiniaResultType;
 
+use std::str::FromStr;
+
 /// Enum representing all available Rukinia tasks.
 ///
 /// Each variant corresponds to a specific test or check that Rukinia can perform.
@@ -135,6 +137,10 @@ impl RukiniaAllTasks {
             },
         }
     }
+}
+
+impl FromStr for RukiniaAllTasks {
+    type Err = ();
 
     /// Convert from string representation to RukiniaAllTasks variant.
     ///
@@ -148,7 +154,7 @@ impl RukiniaAllTasks {
     /// ```rust,ignore
     /// let task = RukiniaAllTasks::from_str("network_is_up").unwrap();
     /// ```
-    pub fn from_str(s: &str) -> Result<Self, ()> {
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
             _ if s == RukiniaNetworkIsUp::get_rukinia_command() => Ok(RukiniaAllTasks::NetworkIsUp),
             _ if s == RukiniaKernelConf::get_rukinia_command() => Ok(RukiniaAllTasks::KernelConf),

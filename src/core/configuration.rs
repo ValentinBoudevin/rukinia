@@ -54,6 +54,5 @@ pub fn rukinia_read_test_file(file: &mut File, buffer: &mut String) {
             e.to_string(),
         )
         .display_result();
-        return;
     }
 }

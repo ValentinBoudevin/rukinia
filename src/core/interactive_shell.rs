@@ -61,13 +61,13 @@ pub fn interactive_shell() {
                 println!("{}: {}", i + 1, cmd);
             }
             continue;
-        } else if command.starts_with('!') {
-            if let Ok(index) = command[1..].parse::<usize>() {
+        } else if let Some(stripped) = command.strip_prefix('!') {
+            if let Ok(index) = stripped.parse::<usize>() {
                 if index > 0 && index <= history.len() {
                     let previous_command = &history[index - 1];
                     println!("Running: {}", previous_command);
                     rt.block_on(async {
-                        match rukinia_execute_single_test(&previous_command).await {
+                        match rukinia_execute_single_test(previous_command).await {
                             Ok(result) => result.display_result(),
                             Err(err) => err.display_result(),
                         };

@@ -26,7 +26,7 @@ impl RukiniaProcess for RukiniaUser {
             result: RukiniaResultEntry::new(RukiniaResultType::TestFail, String::new()),
         };
 
-        let username = match rukinia_user.arguments.get(0) {
+        let username = match rukinia_user.arguments.first() {
             Some(name) => name.trim_matches('"'),
             None => {
                 return Err(RukiniaError::new(
@@ -81,23 +81,23 @@ impl RukiniaProcess for RukiniaUser {
         }
 
         rukinia_user.apply_syntax();
-        return Ok(rukinia_user);
+        Ok(rukinia_user)
     }
 
     fn get_result(&self) -> RukiniaResultEntry {
-        return self.result.clone();
+        self.result.clone()
     }
 
     fn display_format(&self) -> String {
-        return format!(
+        format!(
             "Checking user {} {}exists",
-            self.arguments.get(0).unwrap(),
+            self.arguments.first().unwrap(),
             if self.syntax.contains_not() {
                 "not "
             } else {
                 ""
             }
-        );
+        )
     }
 
     fn set_result(&mut self, result: RukiniaResultEntry) {
@@ -105,6 +105,6 @@ impl RukiniaProcess for RukiniaUser {
     }
 
     fn get_syntax(&self) -> SyntaxForTrait {
-        return self.syntax.clone();
+        self.syntax.clone()
     }
 }

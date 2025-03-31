@@ -34,7 +34,7 @@ impl fmt::Display for FormatOutput {
     }
 }
 
-impl<'a> CsvTestResult<'a> {
+impl CsvTestResult<'_> {
     pub async fn append_csv_result(&self, csv_path: &str) -> Result<(), csv::Error> {
         let file_exists = Path::new(csv_path).exists();
 

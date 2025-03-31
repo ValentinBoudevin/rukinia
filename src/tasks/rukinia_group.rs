@@ -22,7 +22,7 @@ impl RukiniaProcess for RukiniaGroup {
             result: RukiniaResultEntry::new(RukiniaResultType::TestFail, String::new()),
         };
 
-        let group_name = match rukinia_group.arguments.get(0) {
+        let group_name = match rukinia_group.arguments.first() {
             Some(name) => name.trim_matches('"'),
             None => {
                 return Err(RukiniaError::new(
@@ -77,7 +77,7 @@ impl RukiniaProcess for RukiniaGroup {
         }
 
         rukinia_group.apply_syntax();
-        return Ok(rukinia_group);
+        Ok(rukinia_group)
     }
 
     fn get_rukinia_command() -> &'static str {
@@ -85,19 +85,19 @@ impl RukiniaProcess for RukiniaGroup {
     }
 
     fn get_result(&self) -> RukiniaResultEntry {
-        return self.result.clone();
+        self.result.clone()
     }
 
     fn display_format(&self) -> String {
-        return format!(
+        format!(
             "Checking group {} {}exists",
-            self.arguments.get(0).unwrap(),
+            self.arguments.first().unwrap(),
             if self.syntax.contains_not() {
                 "not "
             } else {
                 ""
             }
-        );
+        )
     }
 
     fn set_result(&mut self, result: RukiniaResultEntry) {
@@ -105,6 +105,6 @@ impl RukiniaProcess for RukiniaGroup {
     }
 
     fn get_syntax(&self) -> SyntaxForTrait {
-        return self.syntax.clone();
+        self.syntax.clone()
     }
 }

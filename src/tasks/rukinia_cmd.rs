@@ -57,10 +57,8 @@ impl RukiniaProcess for RukiniaCmd {
 
         let output: io::Result<Output> = Command::new(command).args(command_args).output();
 
-        if output.is_ok() {
-            if output.unwrap().status.success() {
-                rukinia_cmd.result.result_type = RukiniaResultType::TestSuccess;
-            }
+        if output.is_ok() && output.unwrap().status.success() {
+            rukinia_cmd.result.result_type = RukiniaResultType::TestSuccess;
         }
 
         rukinia_cmd.apply_syntax();

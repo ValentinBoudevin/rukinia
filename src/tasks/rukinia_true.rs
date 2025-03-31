@@ -21,22 +21,22 @@ impl RukiniaProcess for RukiniaTrue {
             result: RukiniaResultEntry::new(RukiniaResultType::TestSuccess, "true".to_string()),
         };
         rukinia_true.apply_syntax();
-        return Ok(rukinia_true);
+        Ok(rukinia_true)
     }
 
     fn get_result(&self) -> RukiniaResultEntry {
-        return self.result.clone();
+        self.result.clone()
     }
 
     fn display_format(&self) -> String {
-        return format!(
+        format!(
             "{}true",
             if self.syntax.contains_not() {
                 "not "
             } else {
                 ""
             }
-        );
+        )
     }
 
     fn set_result(&mut self, result: RukiniaResultEntry) {
@@ -44,6 +44,6 @@ impl RukiniaProcess for RukiniaTrue {
     }
 
     fn get_syntax(&self) -> SyntaxForTrait {
-        return self.syntax.clone();
+        self.syntax.clone()
     }
 }

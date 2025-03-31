@@ -27,7 +27,7 @@ impl RukiniaProcess for RukiniaUserMemberOf {
             result: RukiniaResultEntry::new(RukiniaResultType::TestFail, String::new()),
         };
 
-        let username = match rukinia_user_member_of.arguments.get(0) {
+        let username = match rukinia_user_member_of.arguments.first() {
             Some(name) => name.trim_matches('"'),
             None => {
                 return Err(RukiniaError::new(
@@ -115,17 +115,17 @@ impl RukiniaProcess for RukiniaUserMemberOf {
             break;
         }
         rukinia_user_member_of.apply_syntax();
-        return Ok(rukinia_user_member_of);
+        Ok(rukinia_user_member_of)
     }
 
     fn get_result(&self) -> RukiniaResultEntry {
-        return self.result.clone();
+        self.result.clone()
     }
 
     fn display_format(&self) -> String {
-        return format!(
+        format!(
             "Checking user {} is {}member of {}",
-            self.arguments.get(0).unwrap(),
+            self.arguments.first().unwrap(),
             if self.syntax.contains_not() {
                 "not "
             } else {
@@ -137,7 +137,7 @@ impl RukiniaProcess for RukiniaUserMemberOf {
                 .map(|s| s.as_str())
                 .collect::<Vec<&str>>()
                 .join(" ")
-        );
+        )
     }
 
     fn set_result(&mut self, result: RukiniaResultEntry) {
@@ -145,6 +145,6 @@ impl RukiniaProcess for RukiniaUserMemberOf {
     }
 
     fn get_syntax(&self) -> SyntaxForTrait {
-        return self.syntax.clone();
+        self.syntax.clone()
     }
 }

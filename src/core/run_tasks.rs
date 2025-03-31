@@ -68,8 +68,6 @@ static RE: Lazy<Regex> = Lazy::new(|| Regex::new(r#""([^"]*)"|(\S+)"#).unwrap())
 /// ```rust,ignore
 /// rukinia_run_analysis(None).await;
 /// ```
-///
-
 pub async fn rukinia_run_analysis(result_format: Option<ResultFormat>) {
     let mut file: Option<File> = None;
     let mut contents = String::new();
@@ -327,28 +325,25 @@ async fn read_expression_task(
 
     while !remaining_parts.is_empty() {
         let word = &remaining_parts[0];
-        match word.as_str() {
-            _ => match RukiniaAllTasks::from_str(word) {
-                Ok(_) => {
-                    let (task_result, arguments, remaining) = create_task(remaining_parts.clone())?;
-                    let rukinia_valid =
-                        execute_task(task_result, arguments.clone(), syntax).await?;
-                    return Ok((rukinia_valid, remaining));
-                }
-                Err(_) => {
-                    let (new_syntax_trait, new_remaining) =
-                        SyntaxForTrait::extract_syntax(remaining_parts).await?;
-                    syntax = new_syntax_trait;
-                    remaining_parts = new_remaining;
-                }
-            },
+        match RukiniaAllTasks::from_str(word.as_str()) {
+            Ok(_) => {
+                let (task_result, arguments, remaining) = create_task(remaining_parts.clone())?;
+                let rukinia_valid = execute_task(task_result, arguments.clone(), syntax).await?;
+                return Ok((rukinia_valid, remaining));
+            }
+            Err(_) => {
+                let (new_syntax_trait, new_remaining) =
+                    SyntaxForTrait::extract_syntax(remaining_parts).await?;
+                syntax = new_syntax_trait;
+                remaining_parts = new_remaining;
+            }
         }
     }
-    return Err(RukiniaError::new(
+    Err(RukiniaError::new(
         "No task found in the test".to_string(),
         "Failed to parse rukinia task".to_string(),
         format!("No task in test: {}", parts.join(" ")),
-    ));
+    ))
 }
 
 /// Creates a task from a set of parts in the expression.
