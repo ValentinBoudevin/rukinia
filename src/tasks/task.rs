@@ -13,14 +13,17 @@ use super::rukinia_cmd::RukiniaCmd;
 use super::rukinia_false::RukiniaFalse;
 use super::rukinia_true::RukiniaTrue;
 use crate::tasks::rukinia_group::RukiniaGroup;
+#[cfg(feature = "reqwest")]
 use crate::tasks::rukinia_http_request::RukiniaHttpReq;
 use crate::tasks::rukinia_kconf::RukiniaKernelConf;
 use crate::tasks::rukinia_kmod::RukiniaKernelMod;
 use crate::tasks::rukinia_kthread::RukiniaKernelThread;
+#[cfg(feature = "nix")]
 use crate::tasks::rukinia_netif_has_ip::RukiniaNetifHasIp;
 use crate::tasks::rukinia_network_is_up::RukiniaNetworkIsUp;
 use crate::tasks::rukinia_symlink::RukiniaSymlink;
 use crate::tasks::rukinia_user::RukiniaUser;
+#[cfg(feature = "nix")]
 use crate::tasks::rukinia_user_memberof::RukiniaUserMemberOf;
 
 use crate::core::rukinia_result::RukiniaError;
@@ -38,14 +41,17 @@ pub enum RukiniaAllTasks {
     NetworkIsUp,
     /// Check kernel configuration
     KernelConf,
+    #[cfg(feature = "nix")]
     /// Check if network interface has IP
     NetifHasIp,
+    #[cfg(feature = "reqwest")]
     /// Make HTTP request and check response
     HttpReq,
     /// Check user existence and properties
     User,
     /// Check group existence and properties
     Group,
+    #[cfg(feature = "nix")]
     /// Check user group membership
     UserMemberOf,
     /// Check kernel module status
@@ -91,10 +97,12 @@ impl RukiniaAllTasks {
                 Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
                 Err(rukinia_error) => Err(rukinia_error),
             },
+            #[cfg(feature = "nix")]
             RukiniaAllTasks::NetifHasIp => match RukiniaNetifHasIp::new(arguments, syntax) {
                 Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
                 Err(rukinia_error) => Err(rukinia_error),
             },
+            #[cfg(feature = "reqwest")]
             RukiniaAllTasks::HttpReq => match RukiniaHttpReq::async_new(arguments, syntax).await {
                 Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
                 Err(rukinia_error) => Err(rukinia_error),
@@ -107,6 +115,7 @@ impl RukiniaAllTasks {
                 Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
                 Err(rukinia_error) => Err(rukinia_error),
             },
+            #[cfg(feature = "nix")]
             RukiniaAllTasks::UserMemberOf => match RukiniaUserMemberOf::new(arguments, syntax) {
                 Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
                 Err(rukinia_error) => Err(rukinia_error),
@@ -158,10 +167,13 @@ impl FromStr for RukiniaAllTasks {
         match s {
             _ if s == RukiniaNetworkIsUp::get_rukinia_command() => Ok(RukiniaAllTasks::NetworkIsUp),
             _ if s == RukiniaKernelConf::get_rukinia_command() => Ok(RukiniaAllTasks::KernelConf),
+            #[cfg(feature = "nix")]
             _ if s == RukiniaNetifHasIp::get_rukinia_command() => Ok(RukiniaAllTasks::NetifHasIp),
+            #[cfg(feature = "reqwest")]
             _ if s == RukiniaHttpReq::get_rukinia_command() => Ok(RukiniaAllTasks::HttpReq),
             _ if s == RukiniaUser::get_rukinia_command() => Ok(RukiniaAllTasks::User),
             _ if s == RukiniaGroup::get_rukinia_command() => Ok(RukiniaAllTasks::Group),
+            #[cfg(feature = "nix")]
             _ if s == RukiniaUserMemberOf::get_rukinia_command() => {
                 Ok(RukiniaAllTasks::UserMemberOf)
             }
