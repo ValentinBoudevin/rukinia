@@ -165,11 +165,11 @@ impl FromStr for RukiniaAllTasks {
     /// ```
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
+            #[cfg(feature = "network")]
             _ if s == RukiniaNetworkIsUp::get_rukinia_command() => Ok(RukiniaAllTasks::NetworkIsUp),
-            _ if s == RukiniaKernelConf::get_rukinia_command() => Ok(RukiniaAllTasks::KernelConf),
-            
+            #[cfg(feature = "network")]
             _ if s == RukiniaNetifHasIp::get_rukinia_command() => Ok(RukiniaAllTasks::NetifHasIp),
-            
+            #[cfg(feature = "network")]
             _ if s == RukiniaHttpReq::get_rukinia_command() => Ok(RukiniaAllTasks::HttpReq),
             #[cfg(feature = "user")]
             _ if s == RukiniaUser::get_rukinia_command() => Ok(RukiniaAllTasks::User),
@@ -177,14 +177,18 @@ impl FromStr for RukiniaAllTasks {
             _ if s == RukiniaGroup::get_rukinia_command() => Ok(RukiniaAllTasks::Group),
             #[cfg(feature = "user")]
             _ if s == RukiniaUserMemberOf::get_rukinia_command() => Ok(RukiniaAllTasks::UserMemberOf),
+            #[cfg(feature = "kernel")]
+            _ if s == RukiniaKernelConf::get_rukinia_command() => Ok(RukiniaAllTasks::KernelConf),
+            #[cfg(feature = "kernel")]
             _ if s == RukiniaKernelMod::get_rukinia_command() => Ok(RukiniaAllTasks::KernelMod),
+            #[cfg(feature = "kernel")]
             _ if s == RukiniaKernelThread::get_rukinia_command() => Ok(RukiniaAllTasks::KernelThread),
             #[cfg(feature = "filesystem")]
             _ if s == RukiniaSymlink::get_rukinia_command() => Ok(RukiniaAllTasks::Symlink),
-            _ if s == RukiniaTrue::get_rukinia_command() => Ok(RukiniaAllTasks::True),
-            _ if s == RukiniaFalse::get_rukinia_command() => Ok(RukiniaAllTasks::False),
             #[cfg(feature = "filesystem")]
             _ if s == RukiniaCmd::get_rukinia_command() => Ok(RukiniaAllTasks::Cmd),
+            _ if s == RukiniaTrue::get_rukinia_command() => Ok(RukiniaAllTasks::True),
+            _ if s == RukiniaFalse::get_rukinia_command() => Ok(RukiniaAllTasks::False),
             _ => Err(()),
         }
     }
