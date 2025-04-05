@@ -3,7 +3,7 @@ mod rukinia_group {
 
     use rukinia::core::rukinia_result::RukiniaResultType;
     use rukinia::core::syntax::{Syntax, SyntaxForTrait};
-    use rukinia::tasks::rukinia_group::RukiniaGroup;
+    use rukinia::tasks::user::rukinia_group::RukiniaGroup;
     use rukinia::tasks::task::RukiniaProcess;
 
     #[test]

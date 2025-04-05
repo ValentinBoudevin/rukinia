@@ -3,7 +3,7 @@ mod rukinia_cmd {
 
     use rukinia::core::rukinia_result::RukiniaResultType;
     use rukinia::core::syntax::{Syntax, SyntaxForTrait};
-    use rukinia::tasks::rukinia_cmd::RukiniaCmd;
+    use rukinia::tasks::filesystem::rukinia_cmd::RukiniaCmd;
     use rukinia::tasks::task::RukiniaProcess;
 
     #[test]

@@ -9,22 +9,19 @@ use std::future::Future;
 
 use crate::core::syntax::SyntaxForTrait;
 
-use super::rukinia_cmd::RukiniaCmd;
-use super::rukinia_false::RukiniaFalse;
-use super::rukinia_true::RukiniaTrue;
-use crate::tasks::rukinia_group::RukiniaGroup;
-#[cfg(feature = "reqwest")]
-use crate::tasks::rukinia_http_request::RukiniaHttpReq;
-use crate::tasks::rukinia_kconf::RukiniaKernelConf;
-use crate::tasks::rukinia_kmod::RukiniaKernelMod;
-use crate::tasks::rukinia_kthread::RukiniaKernelThread;
-#[cfg(feature = "nix")]
-use crate::tasks::rukinia_netif_has_ip::RukiniaNetifHasIp;
-use crate::tasks::rukinia_network_is_up::RukiniaNetworkIsUp;
-use crate::tasks::rukinia_symlink::RukiniaSymlink;
-use crate::tasks::rukinia_user::RukiniaUser;
-#[cfg(feature = "nix")]
-use crate::tasks::rukinia_user_memberof::RukiniaUserMemberOf;
+#[cfg(feature = "kernel")]
+use crate::tasks::kernel::{rukinia_kconf::RukiniaKernelConf,rukinia_kmod::RukiniaKernelMod,rukinia_kthread::RukiniaKernelThread};
+
+#[cfg(feature = "network")]
+use crate::tasks::network::{rukinia_http_request::RukiniaHttpReq, rukinia_netif_has_ip::RukiniaNetifHasIp, rukinia_network_is_up::RukiniaNetworkIsUp};
+
+#[cfg(feature = "user")]
+use crate::tasks::user::{rukinia_user::RukiniaUser, rukinia_user_memberof::RukiniaUserMemberOf, rukinia_group::RukiniaGroup};
+
+#[cfg(feature = "filesystem")]
+use crate::tasks::filesystem::{rukinia_cmd::RukiniaCmd,rukinia_symlink::RukiniaSymlink};
+
+use crate::tasks::bool::{rukinia_false::RukiniaFalse,rukinia_true::RukiniaTrue};
 
 use crate::core::rukinia_result::RukiniaError;
 use crate::core::rukinia_result::RukiniaResultEntry;
@@ -37,34 +34,29 @@ use std::str::FromStr;
 /// Each variant corresponds to a specific test or check that Rukinia can perform.
 #[derive(Clone)]
 pub enum RukiniaAllTasks {
-    /// Check if network is up
+    #[cfg(feature = "network")]
     NetworkIsUp,
-    /// Check kernel configuration
-    KernelConf,
-    #[cfg(feature = "nix")]
-    /// Check if network interface has IP
+    #[cfg(feature = "network")]
     NetifHasIp,
-    #[cfg(feature = "reqwest")]
-    /// Make HTTP request and check response
+    #[cfg(feature = "network")]
     HttpReq,
-    /// Check user existence and properties
+    #[cfg(feature = "user")]
     User,
-    /// Check group existence and properties
+    #[cfg(feature = "user")]
     Group,
-    #[cfg(feature = "nix")]
-    /// Check user group membership
+    #[cfg(feature = "user")]
     UserMemberOf,
-    /// Check kernel module status
+    #[cfg(feature = "kernel")]
     KernelMod,
-    /// Check kernel thread status
+    #[cfg(feature = "kernel")]
     KernelThread,
-    /// Check symlink status
+    #[cfg(feature = "kernel")]
+    KernelConf,
+    #[cfg(feature = "filesystem")]
     Symlink,
-    /// Execute arbitrary command
+    #[cfg(feature = "filesystem")]
     Cmd,
-    /// Always returns true
     True,
-    /// Always returns false
     False,
 }
 
@@ -89,49 +81,57 @@ impl RukiniaAllTasks {
         syntax: SyntaxForTrait,
     ) -> Result<RukiniaResultEntry, RukiniaError> {
         match self {
+            #[cfg(feature = "network")]
             RukiniaAllTasks::NetworkIsUp => match RukiniaNetworkIsUp::new(arguments, syntax) {
                 Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
                 Err(rukinia_error) => Err(rukinia_error),
             },
-            RukiniaAllTasks::KernelConf => match RukiniaKernelConf::new(arguments, syntax) {
-                Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
-                Err(rukinia_error) => Err(rukinia_error),
-            },
-            #[cfg(feature = "nix")]
+            #[cfg(feature = "network")]
             RukiniaAllTasks::NetifHasIp => match RukiniaNetifHasIp::new(arguments, syntax) {
                 Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
                 Err(rukinia_error) => Err(rukinia_error),
             },
-            #[cfg(feature = "reqwest")]
+            #[cfg(feature = "network")]
             RukiniaAllTasks::HttpReq => match RukiniaHttpReq::async_new(arguments, syntax).await {
                 Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
                 Err(rukinia_error) => Err(rukinia_error),
             },
+            #[cfg(feature = "user")]
             RukiniaAllTasks::User => match RukiniaUser::new(arguments, syntax) {
                 Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
                 Err(rukinia_error) => Err(rukinia_error),
             },
+            #[cfg(feature = "user")]
             RukiniaAllTasks::Group => match RukiniaGroup::new(arguments, syntax) {
                 Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
                 Err(rukinia_error) => Err(rukinia_error),
             },
-            #[cfg(feature = "nix")]
+            #[cfg(feature = "user")]
             RukiniaAllTasks::UserMemberOf => match RukiniaUserMemberOf::new(arguments, syntax) {
                 Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
                 Err(rukinia_error) => Err(rukinia_error),
             },
+            #[cfg(feature = "kernel")]
+            RukiniaAllTasks::KernelConf => match RukiniaKernelConf::new(arguments, syntax) {
+                Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
+                Err(rukinia_error) => Err(rukinia_error),
+            },
+            #[cfg(feature = "kernel")]
             RukiniaAllTasks::KernelMod => match RukiniaKernelMod::new(arguments, syntax) {
                 Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
                 Err(rukinia_error) => Err(rukinia_error),
             },
+            #[cfg(feature = "kernel")]
             RukiniaAllTasks::KernelThread => match RukiniaKernelThread::new(arguments, syntax) {
                 Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
                 Err(rukinia_error) => Err(rukinia_error),
             },
+            #[cfg(feature = "filesystem")]
             RukiniaAllTasks::Symlink => match RukiniaSymlink::new(arguments, syntax) {
                 Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
                 Err(rukinia_error) => Err(rukinia_error),
             },
+            #[cfg(feature = "filesystem")]
             RukiniaAllTasks::Cmd => match RukiniaCmd::new(arguments, syntax) {
                 Ok(rukinia_valid) => Ok(rukinia_valid.get_result()),
                 Err(rukinia_error) => Err(rukinia_error),
@@ -167,23 +167,23 @@ impl FromStr for RukiniaAllTasks {
         match s {
             _ if s == RukiniaNetworkIsUp::get_rukinia_command() => Ok(RukiniaAllTasks::NetworkIsUp),
             _ if s == RukiniaKernelConf::get_rukinia_command() => Ok(RukiniaAllTasks::KernelConf),
-            #[cfg(feature = "nix")]
+            
             _ if s == RukiniaNetifHasIp::get_rukinia_command() => Ok(RukiniaAllTasks::NetifHasIp),
-            #[cfg(feature = "reqwest")]
+            
             _ if s == RukiniaHttpReq::get_rukinia_command() => Ok(RukiniaAllTasks::HttpReq),
+            #[cfg(feature = "user")]
             _ if s == RukiniaUser::get_rukinia_command() => Ok(RukiniaAllTasks::User),
+            #[cfg(feature = "user")]
             _ if s == RukiniaGroup::get_rukinia_command() => Ok(RukiniaAllTasks::Group),
-            #[cfg(feature = "nix")]
-            _ if s == RukiniaUserMemberOf::get_rukinia_command() => {
-                Ok(RukiniaAllTasks::UserMemberOf)
-            }
+            #[cfg(feature = "user")]
+            _ if s == RukiniaUserMemberOf::get_rukinia_command() => Ok(RukiniaAllTasks::UserMemberOf),
             _ if s == RukiniaKernelMod::get_rukinia_command() => Ok(RukiniaAllTasks::KernelMod),
-            _ if s == RukiniaKernelThread::get_rukinia_command() => {
-                Ok(RukiniaAllTasks::KernelThread)
-            }
+            _ if s == RukiniaKernelThread::get_rukinia_command() => Ok(RukiniaAllTasks::KernelThread),
+            #[cfg(feature = "filesystem")]
             _ if s == RukiniaSymlink::get_rukinia_command() => Ok(RukiniaAllTasks::Symlink),
             _ if s == RukiniaTrue::get_rukinia_command() => Ok(RukiniaAllTasks::True),
             _ if s == RukiniaFalse::get_rukinia_command() => Ok(RukiniaAllTasks::False),
+            #[cfg(feature = "filesystem")]
             _ if s == RukiniaCmd::get_rukinia_command() => Ok(RukiniaAllTasks::Cmd),
             _ => Err(()),
         }

@@ -8,6 +8,13 @@ description = "Small tester for embedded linux system"
 homepage = "https://github.com/ValentinBoudevin/rukinia.git"
 repository = "https://github.com/ValentinBoudevin/rukinia.git"
 
+[features]
+default = ["filesystem", "kernel", "network", "user"]
+filesystem = []
+kernel = []
+network = ["dep:reqwest","dep:nix"]
+user = ["dep:nix"]
+
 [profile.release]
 strip = true
 opt-level = "z"     
@@ -16,8 +23,8 @@ codegen-units = 1
 
 [dependencies]
 regex="1.11.1"
-reqwest = { version = "0.12.12", default-features = false, features = ["rustls-tls"] }
-nix = { version = "0.29", features = ["user","net"] }
+reqwest = { version = "0.12.12", optional = true , default-features = false, features = ["rustls-tls"] }
+nix = { version = "0.29", optional = true , features = ["user","net"] }
 tokio = { version = "1.44", features = ["rt-multi-thread"]}
 serde = { version = "1.0.219", features = ["derive"] }
 config = "0.15.11"

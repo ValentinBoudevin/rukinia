@@ -3,7 +3,7 @@ mod rukinia_false {
 
     use rukinia::core::rukinia_result::RukiniaResultType;
     use rukinia::core::syntax::{Syntax, SyntaxForTrait};
-    use rukinia::tasks::rukinia_false::RukiniaFalse;
+    use rukinia::tasks::bool::rukinia_false::RukiniaFalse;
     use rukinia::tasks::task::RukiniaProcess;
 
     #[test]

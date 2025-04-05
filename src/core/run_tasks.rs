@@ -34,7 +34,8 @@ use std::str::FromStr;
 
 use crate::core::syntax::SyntaxForTrait;
 
-use crate::tasks::rukinia_false::RukiniaFalse;
+use crate::tasks::bool::rukinia_false::RukiniaFalse;
+use crate::tasks::bool::rukinia_true::RukiniaTrue;
 use crate::tasks::task::*;
 
 use crate::core::configuration::rukinia_open_test_file;
@@ -46,7 +47,6 @@ use crate::core::save_test_result::ResultFormat;
 
 use crate::core::operator::LogicalOperator;
 use crate::core::syntax::Syntax;
-use crate::tasks::rukinia_true::RukiniaTrue;
 use once_cell::sync::Lazy;
 use std::error::Error;
 
