@@ -322,6 +322,7 @@ async fn read_expression_task(
 ) -> Result<(RukiniaResultEntry, Vec<String>), RukiniaError> {
     let mut syntax = SyntaxForTrait::Arguments(Vec::new());
     let mut remaining_parts = parts.clone();
+    let mut bool_syntax_extracted = false;
 
     while !remaining_parts.is_empty() {
         let word = &remaining_parts[0];
@@ -332,10 +333,18 @@ async fn read_expression_task(
                 return Ok((rukinia_valid, remaining));
             }
             Err(_) => {
+                if bool_syntax_extracted {
+                    return Err(RukiniaError::new(
+                        "Invalid task".to_string(),
+                        "Failed to parse rukinia task".to_string(),
+                        format!("Invalid task: {}", word),
+                    ));
+                }
                 let (new_syntax_trait, new_remaining) =
                     SyntaxForTrait::extract_syntax(remaining_parts).await?;
                 syntax = new_syntax_trait;
                 remaining_parts = new_remaining;
+                bool_syntax_extracted = true;
             }
         }
     }
