@@ -334,10 +334,9 @@ async fn read_expression_task(
             }
             Err(_) => {
                 if bool_syntax_extracted {
-                    return Err(RukiniaError::new(
-                        "Invalid task".to_string(),
+                    return Err(RukiniaError::new_with_short_description(
+                         parts.join(" "),
                         "Failed to parse rukinia task".to_string(),
-                        format!("Invalid task: {}", word),
                     ));
                 }
                 let (new_syntax_trait, new_remaining) =
@@ -348,10 +347,9 @@ async fn read_expression_task(
             }
         }
     }
-    Err(RukiniaError::new(
-        "No task found in the test".to_string(),
-        "Failed to parse rukinia task".to_string(),
+    Err(RukiniaError::new_with_short_description(
         format!("No task in test: {}", parts.join(" ")),
+        "Failed to parse rukinia task".to_string(),
     ))
 }
 

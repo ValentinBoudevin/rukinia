@@ -117,6 +117,16 @@ impl RukiniaError {
         )
     }
 
+    fn format_message_short(
+        test_command: String,
+        input_system_error_message: String,
+    ) -> String {
+        format!(
+            "Command used : {} | Error message : {}",
+            test_command, input_system_error_message
+        )
+    }
+
     pub fn new(
         test_command: String,
         input_system_error: String,
@@ -126,6 +136,18 @@ impl RukiniaError {
             label: RukiniaError::format_message(
                 test_command,
                 input_system_error,
+                input_system_error_message,
+            ),
+        }
+    }
+
+    pub fn new_with_short_description(
+        test_command: String,
+        input_system_error_message: String,
+    ) -> Self {
+        RukiniaError {
+            label: RukiniaError::format_message_short(
+                test_command,
                 input_system_error_message,
             ),
         }
